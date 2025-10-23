@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block titulo %}Membresías | Sistema{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h2>Membresías Registradas</h2>
+    <a href="{% url 'app_usuario:crear_membresia' %}" class="btn btn-primary">+ Agregar Membresía</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Usuario</th>
+                <th>Tipo de Membresía</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Expiración</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for membresia in membresias %}
+            <tr>
+                <td class="align-middle">{{ membresia.usuario.nombre_usuario }}</td>
+                <td class="align-middle">{{ membresia.get_tipo_membresia_display }}</td>
+                <td class="align-middle">${{ membresia.precio }}</td>
+                <td class="align-middle">
+                    {% if membresia.estado %}
+                        <span class="badge bg-success">Activa</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactiva</span>
+                    {% endif %}
+                </td>
+                <td class="align-middle">{{ membresia.fecha_inicio|date:"d/m/Y" }}</td>
+                <td class="align-middle">
+                    {% if membresia.fecha_expiracion %}
+                        {{ membresia.fecha_expiracion|date:"d/m/Y" }}
+                    {% else %}
+                        <span class="text-muted">No definido</span>
+                    {% endif %}
+                </td>
+                <td class="align-middle">
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'app_usuario:detalle_membresia' membresia.id_membresia %}" class="btn btn-info btn-sm" title="Ver detalles">👁️</a>
+                        <a href="{% url 'app_usuario:editar_membresia' membresia.id_membresia %}" class="btn btn-warning btn-sm" title="Editar">✏️</a>
+                        <a href="{% url 'app_usuario:borrar_membresia' membresia.id_membresia %}" class="btn btn-danger btn-sm" title="Eliminar">🗑️</a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No hay membresías registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
