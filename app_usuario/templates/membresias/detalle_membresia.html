@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block titulo %}Membresía de {{ membresia.usuario.nombre_usuario }} | Sistema{% endblock %}
 
 {% block contenido %}
-<article class="membership-detail">
-    <div class="membership-banner">
-        <div class="membership-info">
-            <h1>Membresía: {{ membresia.tipo_membresia }}</h1>
+<article class="artist-detail">
+    <div class="artist-banner">
+        {% if membresia.usuario.avatar %}
+            <img src="{{ membresia.usuario.avatar.url }}" alt="Avatar de {{ membresia.usuario.nombre_usuario }}" class="detail-photo artist-img">
+        {% else %}
+            <div class="detail-placeholder">👤</div>
+        {% endif %}
+
+        <div class="artist-info">
+            <h1>Membresía: {{ membresia.get_tipo_membresia_display }}</h1>
             <h3>Usuario: {{ membresia.usuario.nombre_usuario }}</h3>
+            <p class="artist-nationality">{% if membresia.estado %}<span class="badge bg-success">Activa</span>{% else %}<span class="badge bg-danger">Inactiva</span>{% endif %}</p>
         </div>
     </div>
 
@@ -15,14 +23,14 @@
         <a href="{% url 'app_usuario:borrar_membresia' membresia.id_membresia %}" class="btn btn-danger">🗑️ Borrar</a>
     </div>
 
-    <section class="membership-info-section">
+    <section class="membership-info-section artist-detail-section">
         <h2>Detalles de la Membresía</h2>
         <ul>
-            <li>Tipo: {{ membresia.tipo_membresia }}</li>
-            <li>Precio: ${{ membresia.precio }}</li>
-            <li>Fecha de Inicio: {{ membresia.fecha_inicio }}</li>
-            <li>Fecha de Expiración: {% if membresia.fecha_expiracion %}{{ membresia.fecha_expiracion }}{% else %}No definida{% endif %}</li>
-            <li>Estado: {% if membresia.estado %}Activa{% else %}Inactiva{% endif %}</li>
+            <li><strong>Tipo:</strong> {{ membresia.get_tipo_membresia_display }}</li>
+            <li><strong>Precio:</strong> ${{ membresia.precio }}</li>
+            <li><strong>Fecha de Inicio:</strong> {{ membresia.fecha_inicio|date:"d/m/Y" }}</li>
+            <li><strong>Fecha de Expiración:</strong> {% if membresia.fecha_expiracion %}{{ membresia.fecha_expiracion|date:"d/m/Y" }}{% else %}No definida{% endif %}</li>
+            <li><strong>Estado:</strong> {% if membresia.estado %}Activa{% else %}Inactiva{% endif %}</li>
         </ul>
     </section>
 </article>

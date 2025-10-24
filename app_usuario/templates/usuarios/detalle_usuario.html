@@ -3,18 +3,18 @@
 {% block titulo %}{{ usuario.nombre_usuario }} | Usuarios{% endblock %}
 
 {% block contenido %}
-<article class="user-detail">
-    <div class="user-banner">
+<article class="artist-detail">
+    <div class="artist-banner">
         {% if usuario.avatar %}
-            <img src="{{ usuario.avatar.url }}" alt="Avatar de {{ usuario.nombre_usuario }}" class="detail-photo">
+            <img src="{{ usuario.avatar.url }}" alt="Avatar de {{ usuario.nombre_usuario }}" class="detail-photo artist-img">
         {% else %}
-            <img src="{% static 'img/default-avatar.svg' %}" alt="Avatar por defecto" class="detail-photo">
+            <div class="detail-placeholder">👤</div>
         {% endif %}
-        <div class="user-info">
+        <div class="artist-info">
             <h1>{{ usuario.nombre_usuario }}</h1>
             <h3>{{ usuario.email }}</h3>
             {% if usuario.es_creador %}
-                <span class="badge badge-success">Creador</span>
+                <span class="artist-nationality">Creador</span>
             {% endif %}
         </div>
     </div>
